@@ -4,7 +4,7 @@ using Prog6212Poe.Models;
 
 namespace Prog6212Poe.ModelHelper
 {
-    public class Semesters
+    public class Semesters: DbContext
     {
 
         private TimeWizContext db ;
@@ -169,7 +169,7 @@ namespace Prog6212Poe.ModelHelper
         /// <param name="endDate"></param>
         /// <param name="student_id"></param>
         /// <returns></returns>
-        public void AddSemester(int semesterNum, int numOfWeeks, DateTime startDate, DateTime endDate, int student_id)
+        public Semester AddSemester(int semesterNum, int numOfWeeks, DateTime startDate, DateTime endDate, int student_id)
         {
             try
             { 
@@ -187,12 +187,12 @@ namespace Prog6212Poe.ModelHelper
                 
                     db.Semesters.Add(semester);
                     db.SaveChanges();
-                
+                return semester;
                                
             }
             catch (Exception e)
             {
-               
+                return null;
                 
             }
         } 

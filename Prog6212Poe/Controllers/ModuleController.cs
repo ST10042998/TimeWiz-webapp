@@ -12,12 +12,14 @@ namespace Prog6212Poe.Controllers
         private Semesters semester;
         private ModuleTables module = new ModuleTables();
         private CalculationClass cal = new CalculationClass();
-        private int numweeks;
-        private List<ModuleViewModel> moduleData = new List<ModuleViewModel>();
+        private int numweeks { get; set; }
+
+        private List<ModuleViewModel> moduleData;
         public ModuleController(TimeWizContext context)
         {
             _context = context;
            semester = new Semesters(context);
+            moduleData = new List<ModuleViewModel>();
         }
 
         public IActionResult ModuleView()
@@ -32,19 +34,19 @@ namespace Prog6212Poe.Controllers
             {
                 var EndDate = cal.CalculateEndOfSemester(Convert.ToDateTime(sem.Semester.StartDate), sem.Semester.NumOfWeeks);
                 var studId = 1;
-                semester.AddSemester(sem.Semester.SemesterNum, sem.Semester.NumOfWeeks, Convert.ToDateTime(sem.Semester.StartDate), EndDate, studId);
+              var semest = semester.AddSemester(sem.Semester.SemesterNum, sem.Semester.NumOfWeeks, Convert.ToDateTime(sem.Semester.StartDate), EndDate, studId);
                 numweeks = sem.Semester.NumOfWeeks;
+                TempData["NumWeeks"] = numweeks;
+                TempData["SemesterId"] = semest.SemesterId;
                 moduleData.Add(sem);
                 ViewBag.Message = "Semester  added";
-                return View("ModuleView");
+               
             }
 
-            // Redirect to the form or another action
-            else
-            {
+            
                 ViewBag.Message = "Semester not added";
-                return View("ModuleView");
-            }
+            return View("ModuleView");
+
         }
 
         // Action method for handling module data submission
@@ -56,27 +58,33 @@ namespace Prog6212Poe.Controllers
             {
                 moduleData.Add(viewModel);
 
-                foreach (var moduleData in this.moduleData)
+                if (TempData.TryGetValue("NumWeeks", out object tempNumWeeks))
                 {
-                    int numberOfWeeks = numweeks;
-                    int classHoursPerWeek = moduleData.Module.ClassHoursPerWeek.Value;
-                    int credit = moduleData.Module.Credits.Value;
-                    string code = moduleData.Module.Code;
+                    int numberOfWeeks = (int)tempNumWeeks;
+                    int classHoursPerWeek = viewModel.Module.ClassHoursPerWeek.Value;
+                    int credit = viewModel.Module.Credits.Value;
+                    string code = viewModel.Module.Code;
 
                     // Calculate the SelfStudyHours for the current module
-                     selfStudyHours = cal.CalculateSelfStudyHours(code, numberOfWeeks, classHoursPerWeek, credit);
-                
+                    selfStudyHours = cal.CalculateSelfStudyHours(code, numberOfWeeks, classHoursPerWeek, credit);
                 }
-                var studId = 1;
-                module.AddModule(viewModel.Module.Name, viewModel.Module.Code, viewModel.Module.Credits.Value ,studId , viewModel.Module.ClassHoursPerWeek.Value, selfStudyHours);
-               ViewBag.Message = "Module added";
+                TempData.TryGetValue("SemesterId", out object tempId);
+                int id = (int)tempId;
+               
+                module.AddModule(viewModel.Module.Name, viewModel.Module.Code, viewModel.Module.Credits.Value, id, viewModel.Module.ClassHoursPerWeek.Value, selfStudyHours);
+                ViewBag.Message = "Module added";
+                //ViewBag.SaveSuccess = true;
                 return View("ModuleView");
                 // Redirect to the form or another action
-                }
-            ViewBag.Message = "Module not added";
-                // If the model state is not valid, return to the form with validation errors
-                return View("ModuleView", viewModel);
+            }
+            else
+            {
+                ViewBag.SaveSuccess = false;
+                ViewBag.Message = "Module not added";
+                ViewBag.Error = "Please add correct values";
+                return View("ModuleView");
             }
         }
+    }
     }
 

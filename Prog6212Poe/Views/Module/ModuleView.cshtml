@@ -49,7 +49,7 @@
         </form>
 
 
-        <form asp-controller="Module" asp-action="SaveModule" method="post">
+        <form asp-controller="Module" asp-action="SaveModule" method="post" id="moduleForm">
         <!-- Module Name-->
         <div style="margin: 20px 0 0 38px;">
             <label>Module name :</label>
@@ -78,10 +78,16 @@
                 <button type="submit" name="btnSaveModule" style="margin: 15px 0 0 200px; width: 134px; background-color: #B5FF6F; box-shadow: 0 0 10px rgba(12, 255, 0, 0.35);">
                     Add Module
                 </button>
-                
+                <a>@ViewBag.Error</a>
+            <a> @ViewBag.Message</a>
             
      </form>
-
+        <!-- JavaScript to reset form fields after successful save -->
+        <script>
+            function clearForm() {
+                document.getElementById("moduleForm").reset();
+            }
+        </script>
         <div style="margin: 15px 0 0 15px">
            
             <!-- button to cancel-->
@@ -93,7 +99,7 @@
             </button>
         </div>
 
-        <a> @ViewBag.Message</a>
+     
         
 
 
@@ -113,4 +119,9 @@
     
 </body>
 </html>
-
+@if (ViewBag.SaveSuccess != null && (bool)ViewBag.SaveSuccess)
+{
+    <script>
+        clearForm();
+    </script>
+}
