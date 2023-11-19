@@ -20,6 +20,7 @@ namespace TimeWizWebApp.HelperClasses
         private Logins login;
         private Students student;
         public int loginId { get; set; }
+        public string mess { get; set; }
         public LoginHelper(TimeWizContext context)
         {
             _context = context;
@@ -41,7 +42,7 @@ namespace TimeWizWebApp.HelperClasses
 
             if (!String.IsNullOrWhiteSpace(name) && !String.IsNullOrWhiteSpace(surname) && !String.IsNullOrWhiteSpace(email) && !String.IsNullOrWhiteSpace(gender) && this.CheckEmail(email))
             {
-                int loginId = student.GetLoginId(username);
+                int loginId = this.GetLoginId(username);
                 student.AddStudentUsingEF(name, surname, email, gender,loginId);
                 return true;
             }
@@ -67,6 +68,32 @@ namespace TimeWizWebApp.HelperClasses
                 return  Encoding.ASCII.GetString(data);
             
         }
+
+        public int GetLoginId(string username)
+        {
+            int id = 0;
+
+            try
+            {
+                var login = _context.Logins
+                    .Where(l => l.UserName == username)
+                    .FirstOrDefault();
+
+                if (login != null)
+                {
+                    id = login.LoginId;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle or log the exception
+                mess = ex.Message;
+            }
+
+            return id;
+        }
+
+
 
         //----------------------------------------------------------------------------------------------------------------------------------
 

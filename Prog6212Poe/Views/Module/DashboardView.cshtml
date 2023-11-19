@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View</title>
+    <style>
+        /* Add your styles here */
+    </style>
+</head>
+<body style="font-family: Arial;">
+
+    <div style="height: 450px; vertical-align: top;">
+
+        <label style="color: DarkCyan; font-size: 25px; font-weight: bold; margin: 10px 24px 0 0; text-align: right; width: 75px;">VIEW</label>
+
+        <!-- label and comobox for choosing semester  -->
+        <div style="margin: 24px 0 0 38px;">
+            <label>Semester</label>
+            <select name="cmBoxSemest" style="margin: 4px 0 0 0; width: 120px;">
+                <!-- Add options dynamically based on your data -->
+            </select>
+        </div>
+
+        <!-- datagrid to display the semester data -->
+        <table style="margin: 65px 0 0 202px; width: 498px; background-color: #F9DBC1; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Semester</th>
+                    <th>Number of Weeks</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <!-- datagrid to display the Module data -->
+        <table style="margin: 184px 10px 0 20px; width: 734px; background-color: #F9DBC1; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Module Name</th>
+                    <th>Module Code</th>
+                    <th>Credits</th>
+                    <th>Class Hours Per Week</th>
+                    <th>Self-study Hours</th>
+                    <th>Remaining Hours</th>
+                    <th>Completion</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <div>
+            <!-- Delete button -->
+            <button type="button" name="btnDelete" style="margin: 300px 54px 0 525px; width: 99px; background-color: #F73939; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45); vertical-align: top;">
+                <img src="Icons/bin.png" style="width: 22px; height: 22px; vertical-align: middle;" />
+                <span style="font-size: 16px; margin-left: 10px; vertical-align: middle; color: black;">Delete</span>
+            </button>
+        </div>
+        <label style="color: Magenta; font-size: 21px; margin: 113px 0 0 38px; vertical-align: top; width: 109px;"></label>
+    </div>
+
+
+</body>
+</html>
+

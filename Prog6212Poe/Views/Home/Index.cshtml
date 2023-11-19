@@ -1,8 +1,33 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿    ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a @ViewBag.Models</a>.</p>
-</div>
+<style>
+    body {
+        background-image: url('Images/TimeWiz-Home.jpg');
+        margin: 0;
+    }
+
+
+    .welcome-container {
+        position: absolute;
+        left: 133px;
+        bottom: 334px;
+        height: 96px;
+        width: 514px;
+        text-align: center;
+    }
+</style>
+
+<body>
+
+    <div class="background-container">
+        <!-- Your content goes here -->
+
+        <div class="welcome-container">
+
+            <h1 style="font-size: 36px; font-weight: bold; margin-bottom: 5px;">Welcome to TimeWiz</h1>
+            <p style="font-size: 22px; font-weight: bold; font-family: Calibri;">Transform Minutes into Milestones! 🕒</p>
+        </div>
+
+    </div>
+</body>

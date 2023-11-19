@@ -35,38 +35,6 @@ public class Students
         }
     }
 
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    /// <summary>
-    /// getting student id using ADO
-    /// </summary>
-    /// <param name="login"></param>
-    /// <returns></returns>
-    public int GetLoginId(string username)
-    {
-        int id = 0;
-
-        using (SqlConnection connection = new SqlConnection(_context.Database.GetConnectionString()))
-        {
-            connection.Open();
-
-            string query = "SELECT Login_Id FROM Login WHERE UserName = @UserName";
-
-            using (SqlCommand cmd = new SqlCommand(query, connection))
-            {
-                cmd.Parameters.AddWithValue("@UserName", username);
-
-                object result = cmd.ExecuteScalar();
-
-                if (result != null && result != DBNull.Value)
-                {
-                    id = Convert.ToInt32(result);
-                }
-            }
-        }
-
-        return id;
-    }
 
 }
 

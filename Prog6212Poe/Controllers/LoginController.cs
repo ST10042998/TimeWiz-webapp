@@ -26,7 +26,7 @@ namespace Prog6212Poe.Controllers
             
                 if (loginHelper.AddStudent(register.Student.Name, register.Student.Surname, register.Student.Email, register.Student.Gender, register.Login.UserName, register.Login.Password))
                 {
-                ViewBag.Message = loginHelper.loginId;
+                ViewBag.Message = loginHelper.mess;
                 return View("RegisterView", register);
             }
             

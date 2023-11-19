@@ -1,0 +1,91 @@
+﻿@model Prog6212Poe.Models.ModuleTable
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Study</title>
+    <style>
+        /* Add your styles here */
+    </style>
+</head>
+<body style="font-family: Arial;">
+    <form asp-action="LoginView">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div style="height: 450px; vertical-align: top;">
+
+        <label style="color: DarkCyan; font-size: 25px; font-weight: bold; margin: 30px 0 0 0; text-align: right; width: 95px;">STUDY</label>
+
+        <!-- label and comobox for choosing semester  -->
+        <div style="margin: 30px 0 0 4px;">
+            <label>Semester</label>
+            <select name="cmBoxSemester" style="margin: 5px 0 0 0; width: 120px;">
+            </select>
+        </div>
+
+        <!-- datagrid to display the semester data -->
+        <table style="margin: 65px 0 0 202px; width: 498px; background-color: #F9DBC1; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Semester</th>
+                    <th>Number of Weeks</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <!-- datagrid to display the Module data -->
+        <table style="margin: 184px 10px 0 6px; width: 734px; background-color: #F9DBC1; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Module Name</th>
+                    <th>Module Code</th>
+                    <th>Credits</th>
+                    <th>Class Hours Per Week</th>
+                    <th>Self-study Hours</th>
+                    <th>Remaining Hours</th>
+                    <th>Completion</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+
+        <!-- label and combobox for choosing module code -->
+        <div style="margin: 30px 0 0 10px;">
+            <label>Module Code</label>
+            <select name="cmBoxMCode" style="margin: 5px 0 0 0; width: 120px;">
+                <!-- Add options dynamically based on your data -->
+            </select>
+        </div>
+
+        <!-- label and textbox for studyHours input -->
+        <div style="margin: 30px 0 0 10px;">
+            <label>Input studied hours</label>
+                <input asp-for="StudiedHours" style="margin: 5px 0 0 0; width: 120px;" />
+        </div>
+
+        <!-- Cancel button -->
+        <button type="button" name="btnStudyCancel" style="margin: 43px 22px 0 50px; width: 59px; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45); vertical-align: bottom;">
+            Cancel
+        </button>
+
+        <!-- Save button -->
+        <button type="button" name="btnStudySave" style="margin: 4px 22px 0 0; width: 59px; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45); vertical-align: bottom;">
+            Save
+        </button>
+    </div>
+    </div>
+    </form>
+</body>
+</html>
+
