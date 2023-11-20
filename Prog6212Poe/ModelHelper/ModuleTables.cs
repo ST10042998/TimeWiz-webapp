@@ -35,11 +35,10 @@ namespace Prog6212Poe.ModelHelper
             try
 
             {
-                using (var dbContext = new TimeWizContext())
-                {
-                    dbContext.ModuleTables.Add(module);
-                    dbContext.SaveChanges();
-                }
+                
+                    db.ModuleTables.Add(module);
+                    db.SaveChanges();
+                
 
                 return module;
             }
@@ -324,7 +323,7 @@ namespace Prog6212Poe.ModelHelper
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        /*
+
         /// <summary>
         /// get student id using login id
         /// </summary>
@@ -333,30 +332,22 @@ namespace Prog6212Poe.ModelHelper
         public int GetStudentId(int login)
         {
             int id = 0;
-            string query = "SELECT Student_Id FROM Student WHERE Login_Id = @Login_Id";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
+          
+                var student = db.Students
+                    .Where(s => s.LoginId == login)
+                    .FirstOrDefault();
 
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                if (student != null)
                 {
-                    cmd.Parameters.AddWithValue("@Login_Id", login);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            id = reader.GetInt32(0);
-                        }
-                    }
+                    id = student.StudentId;
                 }
-            }
+            
 
             return id;
         }
 
-        
+        /*
         public ModuleTable GetModuleByIdAdo(int id)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

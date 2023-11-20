@@ -1,8 +1,8 @@
-﻿@model Prog6212Poe.Models.ModuleTable
+﻿@model Prog6212Poe.Models.ModuleViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    @using Prog6212Poe.Controllers
+    TimeWizContext db = new TimeWizContext();
 }
-
 
 <!DOCTYPE html>
 
@@ -10,22 +10,23 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Study</title>
-    <style>
-        /* Add your styles here */
-    </style>
+
 </head>
 <body style="font-family: Arial;">
-    <form asp-action="LoginView">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div style="height: 450px; vertical-align: top;">
 
         <label style="color: DarkCyan; font-size: 25px; font-weight: bold; margin: 30px 0 0 0; text-align: right; width: 95px;">STUDY</label>
 
-        <!-- label and comobox for choosing semester  -->
-        <div style="margin: 30px 0 0 4px;">
-            <label>Semester</label>
-            <select name="cmBoxSemester" style="margin: 5px 0 0 0; width: 120px;">
-            </select>
+
+        <form asp-controller="Study" asp-action="DropDownSemester" method="post">
+            <!-- label and comobox for choosing semester  -->
+            <div style="margin: 30px 0 0 4px;">
+                <label>Semester</label>
+                <select name="cmBoxSemester" style="margin: 5px 0 0 0; width: 120px;">
+                    
+                    
+                </select>
         </div>
 
         <!-- datagrid to display the semester data -->
@@ -58,8 +59,12 @@
             <tbody>
             </tbody>
         </table>
+        </form>
+      
+       
 
-
+       
+        <form asp-controller ="Study"  asp-action="DropDownModule" method="post">
         <!-- label and combobox for choosing module code -->
         <div style="margin: 30px 0 0 10px;">
             <label>Module Code</label>
@@ -71,21 +76,25 @@
         <!-- label and textbox for studyHours input -->
         <div style="margin: 30px 0 0 10px;">
             <label>Input studied hours</label>
-                <input asp-for="StudiedHours" style="margin: 5px 0 0 0; width: 120px;" />
+                <input asp-for="Module.StudiedHours" style="margin: 5px 0 0 0; width: 120px;" />
         </div>
-
+    </form>
         <!-- Cancel button -->
         <button type="button" name="btnStudyCancel" style="margin: 43px 22px 0 50px; width: 59px; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45); vertical-align: bottom;">
             Cancel
         </button>
 
+
+        <form asp-controller="Study"  asp-action="SaveStudy" method="post">
+            
         <!-- Save button -->
         <button type="button" name="btnStudySave" style="margin: 4px 22px 0 0; width: 59px; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45); vertical-align: bottom;">
             Save
         </button>
-    </div>
-    </div>
-    </form>
+        </form>
+    
+ </div>
+ 
 </body>
 </html>
 

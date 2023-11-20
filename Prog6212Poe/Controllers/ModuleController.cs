@@ -32,8 +32,8 @@ namespace Prog6212Poe.Controllers
         {
             if (sem.Semester.SemesterNum != 0)
             {
-                var EndDate = cal.CalculateEndOfSemester(Convert.ToDateTime(sem.Semester.StartDate), sem.Semester.NumOfWeeks);
-                var studId = 1;
+              var EndDate = cal.CalculateEndOfSemester(Convert.ToDateTime(sem.Semester.StartDate), sem.Semester.NumOfWeeks);
+              var studId = 1;
               var semest = semester.AddSemester(sem.Semester.SemesterNum, sem.Semester.NumOfWeeks, Convert.ToDateTime(sem.Semester.StartDate), EndDate, studId);
                 numweeks = sem.Semester.NumOfWeeks;
                 TempData["NumWeeks"] = numweeks;
@@ -71,7 +71,7 @@ namespace Prog6212Poe.Controllers
                 TempData.TryGetValue("SemesterId", out object tempId);
                 int id = (int)tempId;
                
-                module.AddModule(viewModel.Module.Name, viewModel.Module.Code, viewModel.Module.Credits.Value, id, viewModel.Module.ClassHoursPerWeek.Value, selfStudyHours);
+              var  newmodule = module.AddModule(viewModel.Module.Name, viewModel.Module.Code, viewModel.Module.Credits.Value, id, viewModel.Module.ClassHoursPerWeek.Value, selfStudyHours);
                 ViewBag.Message = "Module added";
                 //ViewBag.SaveSuccess = true;
                 return View("ModuleView");

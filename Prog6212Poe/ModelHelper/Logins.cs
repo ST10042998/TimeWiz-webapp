@@ -12,7 +12,7 @@ public Logins(TimeWizContext context)
 
    
 
-    public void AddLoginUsingEF(string username, string password)
+    public Login AddLoginUsingEF(string username, string password)
     {
         try
         {
@@ -24,9 +24,12 @@ public Logins(TimeWizContext context)
 
             _context.Logins.Add(login);
             _context.SaveChanges(); // This will insert the login and get the ID
+
+            return login;
         }
         catch (Exception e)
         {
+            return null;
             // Handle exceptions
         }
     }

@@ -35,14 +35,15 @@ namespace TimeWizWebApp.HelperClasses
             if (!String.IsNullOrWhiteSpace(username) && !String.IsNullOrWhiteSpace(password) && this.CheckPassword(password))
             {
                 
-                login.AddLoginUsingEF(username, this.HashPassword(password));
+                var newLogin = login.AddLoginUsingEF(username, this.HashPassword(password));
+                loginId = newLogin.LoginId;
                 return true;
 
             }
 
             if (!String.IsNullOrWhiteSpace(name) && !String.IsNullOrWhiteSpace(surname) && !String.IsNullOrWhiteSpace(email) && !String.IsNullOrWhiteSpace(gender) && this.CheckEmail(email))
             {
-                int loginId = this.GetLoginId(username);
+              
                 student.AddStudentUsingEF(name, surname, email, gender,loginId);
                 return true;
             }
