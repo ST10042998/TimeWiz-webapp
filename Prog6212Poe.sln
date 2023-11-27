@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Prog6212Poe", "Prog6212Poe\Prog6212Poe.csproj", "{19D9DF17-24EF-4C63-825C-2B4D519DA34B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTimeWizClassLib", "..\..\..\Documents\Eugene Paulse ST10042998 PROG6212 PART2 (1)\Eugene Paulse ST10042998 PROG6212 PART2\Eugene Paulse ST10042998 PROG6212 PART2\TimeWiz\MyTimeWizClassLib\MyTimeWizClassLib.csproj", "{6AA51F45-4EA3-4F65-BB3A-72F4B7313041}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTimeWizClassLib", "MyTimeWizClassLib\MyTimeWizClassLib.csproj", "{6AA51F45-4EA3-4F65-BB3A-72F4B7313041}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

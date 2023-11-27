@@ -7,7 +7,7 @@ namespace Prog6212Poe.Models
     {
         public Login()
         {
-            Students = new HashSet<Student>();
+            LoginInfos = new HashSet<LoginInfo>();
         }
 
         public int LoginId { get; set; }
@@ -15,5 +15,6 @@ namespace Prog6212Poe.Models
         public string Password { get; set; } = null!;
 
         public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<LoginInfo> LoginInfos { get; set; }
     }
 }

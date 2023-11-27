@@ -5,6 +5,11 @@ namespace Prog6212Poe.Models
 {
     public partial class ModuleTable
     {
+        public ModuleTable()
+        {
+            StudyDay = new HashSet<StudyDays>();
+        }
+
         public int ModuleId { get; set; }
         public string Name { get; set; } = null!;
         public string Code { get; set; } = null!;
@@ -18,5 +23,6 @@ namespace Prog6212Poe.Models
         public int? StudiedHours { get; set; }
 
         public virtual Semester Semester { get; set; } = null!;
+        public virtual ICollection<StudyDays> StudyDay { get; set; }
     }
 }

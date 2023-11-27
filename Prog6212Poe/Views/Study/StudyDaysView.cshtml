@@ -1,0 +1,142 @@
+﻿@model Prog6212Poe.Models.StudyDays
+@{
+    @using Prog6212Poe.Controllers
+}
+<style>
+    body {
+        background-color: lightcyan;
+    }
+</style>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Study</title>
+</head>
+<body style="font-family: Arial; margin: 0; padding: 0;">
+
+    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: space-between; padding-bottom: 20px;">
+
+
+        <label style="color: DarkCyan; font-size: 25px; font-weight: bold; margin: 10px 0 0 0; text-align: right; width: 95px;">STUDY PLANNER</label>
+
+        <form id="studyForm" asp-controller="Study" asp-action="DropDownSemester" method="post">
+            <!-- label and combobox for choosing semester  -->
+            <div style="margin: 10px 0;">
+                <label>Semester</label>
+                <select id="semesterDropdown"  asp-items="ViewBag.SemesterList" style="margin: 5px 0 0 0; width: 120px;" onclick="onDropdownChange()" name="SelectedItemId"></select>
+            </div>
+
+        </form>
+
+        <form asp-controller="Study" asp-action="DropDownModule" method="post">
+            <!-- label and combobox for choosing module code -->
+            <div style="margin: 10px 0;">
+                <label>Module Code</label>
+                <select id="moduleDropDown" asp-items="ViewBag.ModuleList" name="cmBoxMCode" style="margin: 5px 0 0 0; width: 120px;" onclick="getId()" name="cmBoxMCode"></select>
+            </div>
+        </form>
+        
+            <!-- label and textbox for studyHours input -->
+            <div style="margin: 10px 0;">
+                <label>choose day to study</label>
+                <select id="DayDropDown" asp-items="ViewBag.StudyDayList" style="margin: 5px 0 0 0; width: 120px;" onclick="chosenDay()" ></select>
+            </div>
+
+            
+
+            <!-- Cancel and Save buttons -->
+            <div style="display: flex; justify-content: space-between; margin: 35px 0;">
+                <form asp-controller="Study" asp-action="Cancel" method="post" style="width: 45%;">
+                <button type="button" name="btnStudyCancel" style="margin:auto; width:35%; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);">Cancel</button>
+               </form>
+                <button type="submit" name="btnStudySave" style="margin:auto; width: 35%; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45);" onclick="save">Save</button>
+
+            </div>
+       
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+   
+    <script>
+
+        // Function to handle dropdown change
+        function onDropdownChange() {
+            // Get the selected semester ID
+            var selectedSemesterId = $("#semesterDropdown").val();
+
+            if (selectedSemesterId) {
+                $.ajax({
+                    url: '/Study/Table',
+                    type: 'POST',
+                    data: { selectedSemesterId: selectedSemesterId },
+                    success: function (data) {
+
+
+                        $('#moduleDropDown').empty();
+                        $.each(data.moduleData, function (index, item) {
+                           
+                            $('#moduleDropDown').append('<option value="' + item.moduleId + '">' + item.code + '</option>');
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error fetching semester data:', error);
+                       
+                    }
+                });
+            }
+        }
+
+        // Function to get selected module ID
+        function getId() {
+            var selectedItemId = $("#moduleDropDown").val();
+
+            // Check if a module is selected
+            if (selectedItemId) {
+               
+                $.ajax({
+                    url: '/Study/IdModule',
+                    type: 'POST',
+                    data: { selectedItemId: selectedItemId },
+                    success: function (data) {
+                     
+                        var moduleData = data.moduleData;
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error fetching module data:', error);
+                       
+                    }
+                });
+            }
+        }
+
+        function chosenDay() {
+            var selectedDay = $("#DayDropDown option:selected").text();
+
+            console.log('Selected Day:', selectedDay);
+
+            if (selectedDay) {
+                $.ajax({
+                    url: '/Study/SaveDays',
+                    type: 'POST',
+                    data: { selectedDay: selectedDay },
+                    success: function (data) {
+                        var studyDay = data.studyDay;
+
+                        alert('Study day saved: ' + studyDay);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error saving study day:', error);
+                    }
+                });
+            }
+        }
+
+
+    </script>
+
+    <a>@ViewBag.Message</a>
+</body>
+</html>

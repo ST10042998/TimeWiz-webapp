@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Documents\Eugene Paulse ST10042998 PROG6212 PART2 (1)\Eugene Paulse ST10042998 PROG6212 PART2\Eugene Paulse ST10042998 PROG6212 PART2\TimeWiz\MyTimeWizClassLib\MyTimeWizClassLib.csproj" />
+    <ProjectReference Include="..\MyTimeWizClassLib\MyTimeWizClassLib.csproj" />
   </ItemGroup>
+
+
 
 </Project>

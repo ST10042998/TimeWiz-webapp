@@ -3,8 +3,10 @@
 }
 
 <style>
+
     body {
-        background-image: url('Images/TimeWiz-Home.jpg');
+        background-image: url('/Images/TimeWiz-Home.jpg');
+        background-size: cover; 
         margin: 0;
     }
 
@@ -20,15 +22,19 @@
 </style>
 
 <body>
-
-    <div class="background-container">
-        <!-- Your content goes here -->
-
         <div class="welcome-container">
 
             <h1 style="font-size: 36px; font-weight: bold; margin-bottom: 5px;">Welcome to TimeWiz</h1>
             <p style="font-size: 22px; font-weight: bold; font-family: Calibri;">Transform Minutes into Milestones! 🕒</p>
         </div>
 
-    </div>
+        <!-- displays a alert message to let the user know what he or she needs to study today -->
+        @if (TempData["StudyDayInfo"] != null)
+        {
+            var studyDayInfo = TempData["StudyDayInfo"];
+            <script>
+                alert('Please make sure you study the following module today @studyDayInfo');
+            </script>
+        }
+    
 </body>

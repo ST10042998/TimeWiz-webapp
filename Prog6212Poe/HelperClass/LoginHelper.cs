@@ -11,6 +11,7 @@ using System.Windows;
 using Prog6212Poe.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TimeWizWebApp.HelperClasses
 {
@@ -24,20 +25,20 @@ namespace TimeWizWebApp.HelperClasses
         public LoginHelper(TimeWizContext context)
         {
             _context = context;
-            login = new Logins(_context);
-            student = new Students(_context);
+            login = new Logins(context);
+            student = new Students(context);
         }
 
         string pass = string.Empty;
    
-        public bool AddStudent(string name, string surname, string email, string gender, string username, string password)
+        public void AddStudent(string name, string surname, string email, string gender, string username, string password)
         {
             if (!String.IsNullOrWhiteSpace(username) && !String.IsNullOrWhiteSpace(password) && this.CheckPassword(password))
             {
                 
-                var newLogin = login.AddLoginUsingEF(username, this.HashPassword(password));
-                loginId = newLogin.LoginId;
-                return true;
+               login.AddLoginUsingEF(username, this.HashPassword(password));
+               loginId = login.GetLoginId(username);
+               
 
             }
 
@@ -45,12 +46,12 @@ namespace TimeWizWebApp.HelperClasses
             {
               
                 student.AddStudentUsingEF(name, surname, email, gender,loginId);
-                return true;
+               
             }
 
             else
             {
-                return false;
+                return;
             }
         }
 
@@ -158,7 +159,7 @@ namespace TimeWizWebApp.HelperClasses
 
             bool isAuthenticated = false;
 
-            var user = _context.Logins.SingleOrDefault(u => u.UserName == username);
+            var user = _context.Logins.FirstOrDefault(u => u.UserName == username);
 
             if (user != null)
             {

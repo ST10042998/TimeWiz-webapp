@@ -5,10 +5,10 @@ namespace Prog6212Poe.ModelHelper
 {
     public class ModuleTables
     {
-        private TimeWizContext db = new TimeWizContext();
-        public ModuleTables()
-        { 
-        
+        private TimeWizContext db;
+        public ModuleTables(TimeWizContext _context)
+        {
+         db = _context;  
         }
 
         /// <summary>
@@ -23,6 +23,7 @@ namespace Prog6212Poe.ModelHelper
         /// <returns></returns>
         public ModuleTable AddModule(string name, string code, int credits, int semesterId, int classhours, int selfstudy)
         {
+
             var module = new ModuleTable
             {
                 Name = name,
@@ -122,8 +123,7 @@ namespace Prog6212Poe.ModelHelper
         /// <returns></returns>
         public ModuleTable UpdateModule(int id, string name, string code, int credits, int semester_id, int classHours, int selfHours, int remainingHours, int Progressbar, DateTime date, int studiedHrs)
         {
-            using (db = new TimeWizContext())
-            {
+         
 
 
                 var module = db.ModuleTables.Where(m => m.ModuleId == id).SingleOrDefault();
@@ -147,7 +147,7 @@ namespace Prog6212Poe.ModelHelper
                 {
                     return null;
                 }
-            }
+            
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -163,8 +163,7 @@ namespace Prog6212Poe.ModelHelper
         /// <returns></returns>
         public ModuleTable UpdateStudyModule(int id, int remainingHours, int Progressbar, DateTime date, int studiedHrs)
         {
-            using (db = new TimeWizContext())
-            {
+            
 
 
                 var module = db.ModuleTables.Where(m => m.ModuleId == id).SingleOrDefault();
@@ -183,7 +182,7 @@ namespace Prog6212Poe.ModelHelper
                 {
                     return null;
                 }
-            }
+            
         }
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         /*
@@ -287,13 +286,12 @@ namespace Prog6212Poe.ModelHelper
         /// </summary>
         /// <param name="semester"></param>
         /// <returns></returns>
-        public List<ModuleTable> GetAllModules(Semester semester)
+        public List<ModuleTable> GetAllModules(int semester)
         {
-            using (db = new TimeWizContext())
-            {
-                var modules = db.ModuleTables.Where(m => m.SemesterId == semester.SemesterId).ToList();
+           
+                var modules = db.ModuleTables.Where(m => m.SemesterId == semester).ToList();
                 return modules;
-            }
+            
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -333,7 +331,7 @@ namespace Prog6212Poe.ModelHelper
         {
             int id = 0;
 
-          
+           
                 var student = db.Students
                     .Where(s => s.LoginId == login)
                     .FirstOrDefault();
@@ -342,6 +340,7 @@ namespace Prog6212Poe.ModelHelper
                 {
                     id = student.StudentId;
                 }
+            
             
 
             return id;

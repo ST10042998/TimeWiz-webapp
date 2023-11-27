@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using NuGet.Protocol;
 
 namespace Prog6212Poe.Models
 {
@@ -20,6 +21,10 @@ namespace Prog6212Poe.Models
         public virtual DbSet<ModuleTable> ModuleTables { get; set; } = null!;
         public virtual DbSet<Semester> Semesters { get; set; } = null!;
         public virtual DbSet<Student> Students { get; set; } = null!;
+        public virtual DbSet<LoginInfo> LoginInfos { get; set; } = null!;
+        public virtual DbSet<StudyDays> StudyDays { get; set; } = null!;
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -112,6 +117,33 @@ namespace Prog6212Poe.Models
                     .WithMany(p => p.Students)
                     .HasForeignKey(d => d.LoginId)
                     .HasConstraintName("FK_Student_Login");
+            });
+            modelBuilder.Entity<LoginInfo>(entity =>
+            {
+                entity.ToTable("LoginInfo");
+
+                entity.Property(e => e.Id).HasColumnName("Id");
+
+                entity.Property(e => e.LoginId).HasColumnName("Login_Id");
+
+                entity.HasOne(d => d.Login)
+                    .WithMany(p => p.LoginInfos)
+                    .HasForeignKey(d => d.LoginId)
+                    .HasConstraintName("FK_LoginInfo_Login_Id");
+            });
+            modelBuilder.Entity<StudyDays>(entity =>
+            {
+                entity.ToTable("StudyDays");
+
+                entity.Property(e => e.StudyDaysId).HasColumnName("StudyDays_Id");
+
+                entity.Property(e => e.Day).IsUnicode(false);
+
+                entity.Property(e => e.Module_Id).HasColumnName("Module_Id");
+
+                entity.HasOne(d => d.Module)
+                    .WithMany(p => p.StudyDay)
+                    .HasForeignKey(d => d.Module_Id);                  
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -10,7 +10,9 @@
     <meta name="viewport" content="width=device-width" />
     <title>Register</title>
     <style>
-        /* Add your styles here */
+        
+       
+
         .register-container {
             width: 606.5px;
             background-color: white;
@@ -78,8 +80,9 @@
         }
     </style>
 </head>
-<body>
+<body style="margin: 0 0 0 510px">
 
+    <img src="~/Images/register.png" alt="Logo" style="width: 200px; height: 200px; margin: 0 0 0 50px;" />
 
     <form asp-controller="Login" asp-action="RegisterView" method="post">
         <div class="register-container">
@@ -124,6 +127,7 @@
         </div>
     </form>
     <a>@ViewBag.Message</a>
+
 </body>
 </html>
 

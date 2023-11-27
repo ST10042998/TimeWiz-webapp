@@ -8,18 +8,23 @@ namespace Prog6212Poe.HelperClass
     public class StudyHelper
     {
         private Semesters semester;
-        private ModuleTables module = new ModuleTables();
-        int loginId = 1;
+        private ModuleTables module;
+        private TimeWizContext db;
+        LoginInfos loginInfo;
+        
         public StudyHelper(TimeWizContext db)
         {
+            this.db = db;
             semester = new Semesters(db);
-            
+            module = new ModuleTables(db);
+            loginInfo = new LoginInfos(db);
+
         }
       
 
-        public List<SelectListItem> SemesterData()
+        public List<Semester> SemesterData()
         {
-            // Assuming loginId is a variable in your class
+           var loginId = loginInfo.GetLastAdded();
             var studentId = module.GetStudentId(loginId);
 
             // Sort the semesters in alphabetical order
@@ -27,20 +32,28 @@ namespace Prog6212Poe.HelperClass
                 .OrderBy(s => s.SemesterNum)
                 .ToList();
 
-            // Convert Semester objects to SelectListItem objects
-            var selectListItems = sortedSemester.Select(s => new SelectListItem
-            {
-                Value = s.SemesterId.ToString(),
-                Text = $"{s.SemesterNum} " // Adjust as per your Semester class properties
-            }).ToList();
 
-            return selectListItems;
+            return sortedSemester ;
         }
 
 
 
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+        /// <summary>
+        /// Finding module by using modulecode
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public ModuleTable FindModuleByCode(int id)
+        {
+           
+                var module = db.ModuleTables.Where(m => m.ModuleId == id).FirstOrDefault();
+                return module;
+            
+        }
 
+       
 
     }
 }

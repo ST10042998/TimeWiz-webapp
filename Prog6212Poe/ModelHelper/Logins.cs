@@ -10,7 +10,7 @@ public Logins(TimeWizContext context)
         _context = context;
     }
 
-   
+
 
     public Login AddLoginUsingEF(string username, string password)
     {
@@ -33,6 +33,20 @@ public Logins(TimeWizContext context)
             // Handle exceptions
         }
     }
+        public int GetLoginId(string username)
+        {
+            try
+            {
+                var login = _context.Logins.FirstOrDefault(x => x.UserName == username);
+                return login.LoginId;
+            }
+            catch (Exception e)
+            {
+                return 0;
+                // Handle exceptions
+            }
+        }
+    }
 
     
-}
+
