@@ -1,6 +1,6 @@
 ﻿@model Prog6212Poe.Models.ModuleViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "View";
 }
 <style>
     body {
@@ -78,23 +78,27 @@
         </table>
         </form>
 
+            <form id="viewForm" asp-controller="Dashboard" asp-action="Delete" method="post">
 
         <div>
-            <!-- Delete button -->
-            <button type="button" name="btnDelete" style="margin: 70px 24px 0 1025px; width: 99px; background-color: #F73939; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45); vertical-align: top;">
+            <button type="submit"  id="btnDelete" style="margin: 70px 24px 0 1025px; width: 99px; background-color: #F73939; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45); vertical-align: top;">
                 <img src="Icons/bin.png" style="width: 22px; height: 22px; vertical-align: middle;" />
                 <span style="font-size: 16px; margin-left: 10px; vertical-align: middle; color: black;">Delete</span>
             </button>
-        </div>
 
+
+        </div>
+        </form>
        
 
     </div>
 
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <script>
 
+
+    <script>
         // Function to handle dropdown change
         function onDropdownChange() {
             // Get the selected semester ID
@@ -139,11 +143,13 @@
                         // You can add more error handling here if needed
                     }
                 });
-
             }
         }
 
+        
     </script>
+
+
 
 </body>
 </html>

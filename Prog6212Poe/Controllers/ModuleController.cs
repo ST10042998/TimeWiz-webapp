@@ -3,6 +3,8 @@ using Prog6212Poe.ModelHelper;
 using Prog6212Poe.Models;
 using MyTimeWizClassLib;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Reflection;
+using Humanizer;
 
 namespace Prog6212Poe.Controllers
 {
@@ -60,17 +62,17 @@ namespace Prog6212Poe.Controllers
         {
             numweeks.Clear();
             semId.Clear();
-            if (sem.Semester.SemesterNum != 0)
+           
+            if (sem != null && sem.Semester != null && sem.Semester.SemesterNum != 0 && sem.Semester.NumOfWeeks!=0 && sem.Semester.StartDate != DateTime.MinValue)
             {
                 var loginId = loginInfo.GetLastAdded();
                 var studentId = module.GetStudentId(loginId);
 
                 var EndDate = cal.CalculateEndOfSemester(Convert.ToDateTime(sem.Semester.StartDate), sem.Semester.NumOfWeeks);
              
-              var semest = semester.AddSemester(sem.Semester.SemesterNum, sem.Semester.NumOfWeeks, Convert.ToDateTime(sem.Semester.StartDate), EndDate, studentId);
+                var semest = semester.AddSemester(sem.Semester.SemesterNum, sem.Semester.NumOfWeeks, Convert.ToDateTime(sem.Semester.StartDate), EndDate, studentId);
             
-                TempData["NumWeeks"] = semest.NumOfWeeks;
-                TempData["SemesterId"] = semest.SemesterId;
+               
                 HttpContext.Session.SetInt32("SemesterId", semest.SemesterId);
                 HttpContext.Session.SetInt32("NumOfWeeks", semest.NumOfWeeks);
 
@@ -99,7 +101,7 @@ namespace Prog6212Poe.Controllers
         public IActionResult SaveModule(ModuleViewModel viewModel)
         {
             int selfStudyHours = 0;
-            if (viewModel.Module.Credits != 0)
+            if (viewModel.Module.Credits != 0 && viewModel.Module.SelfStudyHours != 0 && viewModel.Module.ClassHoursPerWeek != 0 && viewModel.Module.Name != null && viewModel.Module.Code != null)
             {
                 moduleData.Add(viewModel);
                 int? semesterId = HttpContext.Session.GetInt32("SemesterId");
@@ -123,7 +125,8 @@ namespace Prog6212Poe.Controllers
                     else
                     {
                         ViewBag.Message = "Class Hours cant be more than number of weeks";
-                                       
+                        return View("ModuleView");
+
                     }
                 }
 
@@ -132,18 +135,23 @@ namespace Prog6212Poe.Controllers
                 int Id = semesterId.Value;
                
                 var  newmodule = module.AddModule(viewModel.Module.Name, viewModel.Module.Code, viewModel.Module.Credits.Value, Id, viewModel.Module.ClassHoursPerWeek.Value, selfStudyHours);
-                ViewBag.Message = "Module added";
+
               
-                return View("ModuleView");
-                // Redirect to the form or another action
+
+                ViewBag.Message = "Module added";
+                ViewBag.Message2 = "True";
+              
+
+
             }
             else
             {
-                ViewBag.SaveSuccess = false;
+                ViewBag.Message2 = "False";
                 ViewBag.Message = "Module not added";
                 ViewBag.Error = "Please add correct values";
-                return View("ModuleView");
+                
             }
+            return RedirectToAction("ModuleView");
         }
     }
 }

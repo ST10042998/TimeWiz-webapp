@@ -1,6 +1,7 @@
 ﻿@model Prog6212Poe.Models.StudyDays
 @{
     @using Prog6212Poe.Controllers
+    ViewData["Title"] = "StudyPlanner";
 }
 <style>
     body {
@@ -48,13 +49,25 @@
             <!-- Cancel and Save buttons -->
             <div style="display: flex; justify-content: space-between; margin: 35px 0;">
                 <form asp-controller="Study" asp-action="Cancel" method="post" style="width: 45%;">
-                <button type="button" name="btnStudyCancel" style="margin:auto; width:35%; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);">Cancel</button>
+                <button type="button" name="btnStudyCancel" onclick="CancelBtn_Click()" style="margin:auto; width:35%; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);">Cancel</button>
                </form>
+               
                 <button type="submit" name="btnStudySave" style="margin:auto; width: 35%; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45);" onclick="save">Save</button>
 
             </div>
        
     </div>
+    <!-- datagrid to display the Module data -->
+    <table id="StudyDays" style="margin: 10px 0; width: 100%; background-color: #F9DBC1; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Module Name</th>
+                <th>Study Day</th>
+                
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -94,23 +107,40 @@
 
             // Check if a module is selected
             if (selectedItemId) {
-               
+
                 $.ajax({
                     url: '/Study/IdModule',
                     type: 'POST',
                     data: { selectedItemId: selectedItemId },
                     success: function (data) {
-                     
-                        var moduleData = data.moduleData;
+                        // Clear the table
+                        $('StudyDays tbody').empty();
 
+                        // Iterate through the retrieved data
+                        $.each(data.moduleData, function (index, item) {
+                           
+                            $.ajax({
+                                url: '/Study/GetModuleName', 
+                                type: 'GET',
+                                data: { moduleId: item.module_id },
+                                success: function (name) {
+                                    var name = name.studyDaysData
+                                    // Append a table row with the module name and other data
+                                    $('#StudyDays tbody').append('<tr><td>' + name + '</td><td>' + item.Day + '</td></tr>');
+                                },
+                                error: function (error) {
+                                    console.error('Error fetching module name:', error);
+                                }
+                            });
+                        });
                     },
                     error: function (xhr, status, error) {
                         console.log('Error fetching module data:', error);
-                       
                     }
                 });
             }
         }
+
 
         function chosenDay() {
             var selectedDay = $("#DayDropDown option:selected").text();
@@ -124,8 +154,7 @@
                     data: { selectedDay: selectedDay },
                     success: function (data) {
                         var studyDay = data.studyDay;
-
-                        alert('Study day saved: ' + studyDay);
+                        alert('Study day saved successfully!');
                     },
                     error: function (xhr, status, error) {
                         console.log('Error saving study day:', error);
@@ -133,8 +162,14 @@
                 });
             }
         }
+        
 
+    </script>
 
+    <script>
+        function CancelBtn_Click() {
+            window.location.href = "/Home/Index";
+        }
     </script>
 
     <a>@ViewBag.Message</a>

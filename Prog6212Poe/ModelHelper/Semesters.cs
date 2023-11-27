@@ -164,7 +164,66 @@ namespace Prog6212Poe.ModelHelper
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-      
+        
+        /// <summary>
+        /// delete semester using entity
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Semester DeleteSemesterEntity(int id)
+        {
+            Semester deletedSemester = null;
+
+           
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    // Retrieve the semester to delete
+                    deletedSemester = db.Semesters.Find(id);
+
+                    if (deletedSemester != null)
+                    {
+                        // Delete modules that reference the semester
+                        
+                        var studyDaysToDelete = db.StudyDays.Join(db.ModuleTables,
+                                s => s.Module_Id,
+                                m => m.ModuleId,
+                                (s, m) => new { s, m })
+                            .Join(db.Semesters,
+                                sm => sm.m.SemesterId,
+                                se => se.SemesterId,
+                                (sm, se) => new { sm, se })
+                            .Where(st=> st.se.SemesterId == id);
+                        db.StudyDays.RemoveRange(studyDaysToDelete.Select(s => s.sm.s));
+
+                        var modulesToDelete = db.ModuleTables.Where(m => m.SemesterId == id);
+                        db.ModuleTables.RemoveRange(modulesToDelete);
+
+                        // Delete the semester
+                        db.Semesters.Remove(deletedSemester);
+
+                        // Commit the transaction if everything is successful
+                        db.SaveChanges();
+                        transaction.Commit();
+                    }
+                    else
+                    {
+                        // Roll back the transaction if the semester was not found
+                        transaction.Rollback();
+                    }
+                }
+                catch (Exception e)
+                {
+                   
+                    // Roll back the transaction in case of an exception
+                    transaction.Rollback();
+                }
+            }
+
+            return deletedSemester;
+        }
+
 
     }
 }

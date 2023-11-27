@@ -1,6 +1,7 @@
 ﻿@model Prog6212Poe.Models.ModuleViewModel
 @{
     @using Prog6212Poe.Controllers
+    ViewData["Title"] = "Study";
 }
 
 <style>
@@ -73,9 +74,9 @@
 
         <!-- Cancel and Save buttons -->
         <div style="display: flex; justify-content: space-between; margin: 35px 0;">
-            <button type="button" name="btnStudyCancel" style="margin:auto; width:35%; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);">Cancel</button>
+                <button type="button" name="btnStudyCancel" onclick="CancelBtn_Click()"  style="margin:auto; width:35%; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);">Cancel</button>
            
-                <button type="submit" name="btnStudySave" style="margin:auto; width: 35%; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45);" onclick="save">Save</button>
+                <button type="submit" onclick="saveStudy()"name="btnStudySave" style="margin:auto; width: 35%; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45);" onclick="save">Save</button>
             
         </div>
         </form>
@@ -173,6 +174,13 @@
 
        
     </script>
+
+    <script>
+        function CancelBtn_Click() {
+            window.location.href = "/Home/Index";
+        }
+    </script>
+
 
     <a>@ViewBag.Message</a>
 </body>

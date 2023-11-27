@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Data.SqlClient;
 using Prog6212Poe.Models;
 
 namespace Prog6212Poe.ModelHelper
@@ -45,6 +46,7 @@ namespace Prog6212Poe.ModelHelper
         {
             try
             {
+                this.UpdateLoginIdToNull();
                 db.LoginInfos.Remove(logInfo);
                 db.SaveChanges();
             }
@@ -52,7 +54,35 @@ namespace Prog6212Poe.ModelHelper
             {
                 return;
             }
-        }   
+        }
+
+        //---------------------------------------------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// updating LoginInfo
+        /// </summary>
+        /// <param name="id"></param>
+        public void UpdateLoginIdToNull()
+        {
+            try
+            {
+                // Retrieve all LoginInfo entities
+                var allLoginInfos = db.LoginInfos.ToList();
+
+                // Update the LoginId property to null for all entities
+                foreach (var logInfo in allLoginInfos)
+                {
+                    logInfo.LoginId = null;
+                }
+              
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+               
+            }
+        }
+
         //---------------------------------------------------------------------------------------------------------------------------------------------------
 
         /// <summary>
@@ -66,7 +96,7 @@ namespace Prog6212Poe.ModelHelper
                 var lastAdded = db.LoginInfos.OrderByDescending(l => l.LoginId).FirstOrDefault();
                 if (lastAdded != null)
                 {
-                    return lastAdded.LoginId;
+                    return lastAdded.LoginId.Value;
                 }
                 else
                 {

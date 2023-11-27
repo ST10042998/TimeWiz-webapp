@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyTimeWizClassLib;
 using NuGet.Protocol;
@@ -47,6 +48,7 @@ namespace Prog6212Poe.Controllers
         {
           
             var semesterData = SemTables(selectedSemesterId);
+            
            
             return semesterData;
 
@@ -66,7 +68,7 @@ namespace Prog6212Poe.Controllers
         {
             // Get the data for the selected semester
             var semesterData = semester.GetSemester(selectedID);
-
+            HttpContext.Session.SetInt32("SemesterID", semesterData.Single().SemesterId);
             // Return data as JSON
             return Json(new { semesterData });
         }
@@ -80,5 +82,22 @@ namespace Prog6212Poe.Controllers
             // Return data as JSON
             return Json(new { moduleData });
         }
+
+        [HttpPost]
+        public IActionResult Delete()
+        {
+           var id = HttpContext.Session.GetInt32("SemesterID");
+            Semester deletedSemester = semester.DeleteSemesterEntity(id.Value);
+            if (deletedSemester != null)
+            {
+                return RedirectToAction("DashboardView");
+            }
+            else
+            {
+                return RedirectToAction("DashboardView");
+            }
+   
+        }
+       
     }
 }

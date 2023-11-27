@@ -247,7 +247,7 @@ namespace Prog6212Poe.Controllers
                
             }
 
-            return View("StudyView");
+            return RedirectToAction("StudyView");
 
         }
 
@@ -316,8 +316,9 @@ namespace Prog6212Poe.Controllers
             try
             {
                 // Save the selected day for the specified module
-                var studyDay = days.AddStudyDays(selectedModuleId,selectedDay);
-                return Json(new { studyDay });
+                var studyDay = days.AddStudyDays(selectedModuleId, selectedDay);
+              
+                return View("StudyDaysView");
             }
             catch (Exception ex)
             {
@@ -325,6 +326,21 @@ namespace Prog6212Poe.Controllers
             }
         }
 
+        //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        [HttpGet]
+        /// <summary>
+        /// get table data for the study days table
+        /// </summary>
+        /// <param name="selectedSemesterId"></param>
+        /// <returns></returns>
+        public IActionResult GetModuleName()
+        {
+            int selectedModuleId = HttpContext.Session.GetInt32("ModuleId").Value;
+            var studyDaysData = days.GetStudyDays(selectedModuleId);
+            return Json( new { studyDaysData });
+
+        }
     }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------*Eugene*End..

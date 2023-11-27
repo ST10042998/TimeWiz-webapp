@@ -1,6 +1,6 @@
 ﻿@model Prog6212Poe.Models.RegisterViewModel
 @{
-    ViewData["Title"] = "Register Page";
+    ViewData["Title"] = "Register";
     Layout = null;
 }
 
@@ -10,20 +10,24 @@
     <meta name="viewport" content="width=device-width" />
     <title>Register</title>
     <style>
-        
-       
+        body{
+        background: url('/Images/time.jpg');
+
+        background-position: center;
+        background-attachment: fixed;
+        }
 
         .register-container {
-            width: 606.5px;
-            background-color: white;
+            
+            width: 280px;
+            background-color: azure;
             margin-right: 10px;
         }
 
         .grid-container {
-            margin: 10px 10px 0;
-            width: 586px;
-            height: 450px;
-            vertical-align: top;
+            margin: 0px 0px 0;
+            width: 6px;
+            height:320px;
             display: flex;
             flex-direction: column;
         }
@@ -36,6 +40,7 @@
 
         .grid-label {
             margin-right: 15px;
+            align-items: center;
             width: 70px;
         }
 
@@ -53,18 +58,8 @@
             margin-top: 10px;
         }
 
-        .save-button {
-            margin-right: 10px;
-            width: 92px;
-            height: 23px;
-            background-color: forestgreen;
-            color: white;
-            border: none;
-            border-radius: 16px;
-            cursor: pointer;
-        }
-
         .cancel-button {
+            margin: 10px 0 0 45px;
             width: 92px;
             height: 23px;
             background-color: red;
@@ -74,9 +69,25 @@
             cursor: pointer;
         }
 
+        .save-button {
+            margin: 10px 0 0 45px;
+            width: 92px;
+            height: 23px;
+            background-color: forestgreen;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+
+        }
+
         .password-hint {
-            margin: 302px 0 0 173px;
-            font-size: 8px;
+            margin: 22px 0 0 43px;
+            font-size: 11px;
+            font-family: Arial;
+            font-weight:bold;
+            width:220px;
+            color:darkcyan;
         }
     </style>
 </head>
@@ -119,8 +130,9 @@
                     <span asp-validation-for="Login.Password" class="text-danger"></span>
                 </div>
                 <div class="button-container">
-                    <button class="save-button">Save</button>
                     <button class="cancel-button" type="button" onclick="CancelBtn_Click()">Cancel</button>
+                    <button class="save-button">Save</button>
+                   
                 </div>
                 <div class="password-hint">Should contain uppercase, lowercase, special character, and number</div>
             </div>
@@ -129,5 +141,11 @@
     <a>@ViewBag.Message</a>
 
 </body>
+
+<script>
+function CancelBtn_Click() {
+        window.location.href = "/Login/LoginView";
+    }
+</script>
 </html>
 

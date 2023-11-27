@@ -52,7 +52,7 @@ namespace Prog6212Poe.Controllers
         [HttpPost]
         public IActionResult LoginView(Login log)
         {
-           
+           loginInfo.DeleteLoginInfoEF();
 
            if(loginHelper.Login(log.UserName, log.Password))
             {

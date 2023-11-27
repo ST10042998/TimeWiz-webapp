@@ -97,6 +97,34 @@ namespace Prog6212Poe.ModelHelper
             }
         }
 
+        //-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+        public string GetStudyDays(int moduleId)
+        {
+            try
+            {
+                var studyDay = db.ModuleTables
+                   .Where(md => md.ModuleId == moduleId)
+                   .FirstOrDefault();
+
+                if (studyDay != null)
+                {
+                    // Format the string with the desired information
+                    return $"{studyDay.Name}";
+
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                // Log the exception or handle it appropriately
+                return null;
+            }
+        }
+
     }
 
 }
