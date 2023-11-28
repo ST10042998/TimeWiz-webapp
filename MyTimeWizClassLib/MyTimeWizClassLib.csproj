@@ -50,12 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculationClass.cs" />
-    <Compile Include="SemesterDataClass.cs" />
-    <Compile Include="StudentClass.cs" />
-    <Compile Include="StudyClass.cs" />
-    <Compile Include="ModuleClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SemesterClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

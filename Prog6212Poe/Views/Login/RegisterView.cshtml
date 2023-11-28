@@ -138,14 +138,23 @@
             </div>
         </div>
     </form>
-    <a>@ViewBag.Message</a>
+ 
 
-</body>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-function CancelBtn_Click() {
+    $(document).ready(function () {
+        var message = '@ViewBag.Message';
+        if (message.includes("not added")) {
+            alert('Data not saved due to invalid input. Please check your values. Name should have digits, enter valid email, password should contain uppercase, lowercase, special character, and number , gender cant be empty, username cant be empty');
+        }
+    });
+ function CancelBtn_Click() {
         window.location.href = "/Login/LoginView";
     }
+
+    
 </script>
+</body>
 </html>
 

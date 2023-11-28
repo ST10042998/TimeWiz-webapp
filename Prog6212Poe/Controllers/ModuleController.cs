@@ -5,6 +5,7 @@ using MyTimeWizClassLib;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Reflection;
 using Humanizer;
+using System.Xml.Linq;
 
 namespace Prog6212Poe.Controllers
 {
@@ -102,7 +103,7 @@ namespace Prog6212Poe.Controllers
         {
             int selfStudyHours = 0;
             if (viewModel.Module.Credits != 0 && viewModel.Module.SelfStudyHours != 0 && viewModel.Module.ClassHoursPerWeek != 0 && viewModel.Module.Name != null && viewModel.Module.Code != null)
-            {
+            { 
                 moduleData.Add(viewModel);
                 int? semesterId = HttpContext.Session.GetInt32("SemesterId");
                 int? numOfWeeks = HttpContext.Session.GetInt32("NumOfWeeks");
@@ -134,10 +135,8 @@ namespace Prog6212Poe.Controllers
                
                 int Id = semesterId.Value;
                
-                var  newmodule = module.AddModule(viewModel.Module.Name, viewModel.Module.Code, viewModel.Module.Credits.Value, Id, viewModel.Module.ClassHoursPerWeek.Value, selfStudyHours);
-
-              
-
+                var  newmodule = module.AddModule(char.ToUpper(viewModel.Module.Name[0]) + viewModel.Module.Name.Substring(1), viewModel.Module.Code.ToUpper(), viewModel.Module.Credits.Value, Id, viewModel.Module.ClassHoursPerWeek.Value, selfStudyHours);
+                
                 ViewBag.Message = "Module added";
                 ViewBag.Message2 = "True";
               

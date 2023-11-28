@@ -10,6 +10,10 @@ namespace Prog6212Poe.ModelHelper
 
         private LoginInfo logInfo = new LoginInfo();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="db"></param>
         public LoginInfos(TimeWizContext db)
         {
             this.db = db;

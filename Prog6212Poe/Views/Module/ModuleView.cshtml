@@ -6,6 +6,38 @@
     body {
         background-color: azure;
     }
+
+    .save-button {
+        margin: 25px 0;
+        height: 35px;
+        width: 250px;
+        background: lightgreen;
+        color: black;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+    }
+
+        .save-button:hover {
+            background: AliceBlue;
+            color: white;
+        }
+
+    .cancel-button {
+        margin: 25px 0;
+        height: 35px;
+        width: 250px;
+        background: red;
+        color: black;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+    }
+
+        .cancel-button:hover {
+            background: AliceBlue;
+            color: white;
+        }
 </style>
 
 <!DOCTYPE html>
@@ -14,9 +46,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Module</title>
-    <style>
-        /* Add your styles here */
-    </style>
+ 
 </head>
 <body style="font-family: Arial;">
 
@@ -25,7 +55,8 @@
 
         <label style="color: DarkCyan; font-size: 25px; font-weight: bold; margin: 10px 0 0 0; text-align: right; width: 188px;">ADD DETAILS</label>
         <form asp-controller="Module" asp-action="SaveSemester" method="post">
-        <!-- Semester number-->
+       
+            <!-- Semester number-->
         <div style="margin: 20px 0 0 38px;">
             <label>Semester Number :</label>
             <input asp-for="Semester.SemesterNum" type=" text"  style="margin:auto" display: block;" />
@@ -33,21 +64,21 @@
 
         <!-- Number of weeks in semester-->
         <div style="margin: 15px 0 0 38px;">
-            <!-- Adjusted margin to provide space between inputs -->
+          
             <label>Number of weeks in semester :</label>
             <input asp-for="Semester.NumOfWeeks" type=" text" style="margin:auto" display: block; />
         </div>
 
         <!-- Start date for Semester -->
         <div style="margin: 15px 0 0 38px;">
-            <!-- Adjusted margin to provide space between inputs -->
+          
             <label>Start date of first week:</label>
             <input asp-for="Semester.StartDate" type="date" style="margin:auto;" display: block;" />
         </div>
 
      
         <!-- button to save semester-->
-        <button type="submit" name="btnSaveSemester" style="margin: 30px 0 0 200px; width: 138px; background-color: #B5FF6F; display: block;">
+        <button class="save-button" type="submit" name="btnSaveSemester" style="margin: 20px 0 0 200px; width: 138px; background-color: #B5FF6F; display: block;">
             Add Semester
         </button>
         </form>
@@ -73,13 +104,13 @@
         </div>
 
         <!-- Class hours per week -->
-        <div style="margin: 15px 0 0 0">
+        <div style="margin: 15px 0 0 38px">
             <label>Class hours per week :</label>
                 <input asp-for="Module.ClassHoursPerWeek" id="Module_ClassHoursPerWeek" style="margin:auto" />
         </div>
 
-
-            <button type="submit" onclick="savebtn()" name="btnSaveModule" style="margin: 15px 0 0 200px; width: 134px; background-color: #B5FF6F; box-shadow: 0 0 10px rgba(12, 255, 0, 0.35);">
+        <!-- button to save module -->
+            <button class="save-button" type="submit" onclick="savebtn()" name="btnSaveModule" style="margin: 10px 0 0 200px; width: 134px; background-color: #B5FF6F; box-shadow: 0 0 10px rgba(12, 255, 0, 0.35);">
                     Add Module
                 </button>
                 <a>@ViewBag.Error</a>
@@ -89,25 +120,17 @@
             
      </form>
        
-        <div style="margin: 15px 0 0 15px">
+        <div style="margin: 10px 0 0 15px">
            
             <!-- button to cancel-->
-            <button type="submit" name="btnCancelSave" style="margin: 0 0 0 150px; width: 80px; background-color: #FF987A; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);" onclick="CancelBtn_Click()">
+            <button class="cancel-button" type="submit" name="btnCancelSave" style="margin: 0 0 0 150px; width: 80px; background-color: #FF987A; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);" onclick="CancelBtn_Click()">
                 Cancel
             </button>
-            <button type="submit" onclick="done()"  name="btnDone" style="margin: 0 0 0 15px; width: 80px; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45);">
+            <!--- button after saving all modules  takes you to the view page-->
+            <button class="save-button" type="submit" onclick="done()" name="btnDone" style="margin: 0 0 0 15px; width: 80px; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45);">
                 Done
             </button>
         </div>
-
-    
-
-        <label style="margin: 415px 0 0 146px; width: 293px; height: 25px;"></label>
-
-        <label style="margin: 272px 0 0 377px; color: Red; width: 325px; height: 26px;"></label>
-
-        <label style="margin: 48px 0 0 353px; color: Red; width: 325px; height: 26px;"></label>
-
 
     </div>
     

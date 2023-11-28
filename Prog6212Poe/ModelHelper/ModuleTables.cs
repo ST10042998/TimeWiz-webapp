@@ -5,11 +5,21 @@ namespace Prog6212Poe.ModelHelper
 {
     public class ModuleTables
     {
+        //initializing variables
         private TimeWizContext db;
+
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------Eugene*start
+
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="_context"></param>
         public ModuleTables(TimeWizContext _context)
         {
          db = _context;  
         }
+
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------Eugene*end
 
         /// <summary>
         /// add module to database
@@ -49,61 +59,6 @@ namespace Prog6212Poe.ModelHelper
                 return null;
             }
         }
-        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-        /// <summary>
-        /// get all modules from database using ado.net
-        /// </summary>
-        /// <param name="selectedSemesterNum"></param>
-        /// <returns></returns>
-        public List<ModuleTable> GetAllModulesAdo(string selectedSemesterNum)
-        {
-            List<ModuleTable> modules = new List<ModuleTable>();
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-
-                    string selectQuery = @" SELECT *
-                                            FROM ModuleTable
-                                            JOIN Semester ON ModuleTable.Semester_Id = Semester.Semester_Id
-                                            WHERE Semester.SemesterNum = @selectedSemesterNum";
-
-
-                    using (SqlCommand cmd = new SqlCommand(selectQuery, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@selectedSemesterNum", selectedSemesterNum);
-
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                // Map the database columns to the ModuleTable object
-                                ModuleTable module = new ModuleTable
-                                {
-                                    Module_Id = (int)reader["Module_Id"],
-                                    Name = (string)reader["Name"],
-                                    Code = (string)reader["Code"],
-                                    Credits = (int)reader["Credits"]
-                                };
-
-                                modules.Add(module);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-
-                MessageBox.Show(e.Message);
-            }
-
-            return modules;
-        }
-*/
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         /// <summary>
@@ -185,53 +140,7 @@ namespace Prog6212Poe.ModelHelper
             
         }
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        /*
-        /// <summary>
-        /// update module using ado.net
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="remainingHours"></param>
-        /// <param name="Progressbar"></param>
-        /// <param name="date"></param>
-        /// <param name="studiedHrs"></param>
-        /// <returns></returns>
-        public ModuleTable UpdateStudyModuleAdo(int id, int remainingHours, int Progressbar, DateTime date, int studiedHrs)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string updateQuery = "UPDATE ModuleTable " +
-                                    "SET RemainingWeekHours = @RemainingWeekHours, " +
-                                    "ProgressBarPercentage = @ProgressBarPercentage, " +
-                                    "StudyDate = @StudyDate, " +
-                                    "StudiedHours = @StudiedHours " +
-                                    "WHERE Module_Id = @Module_Id";
-
-                using (SqlCommand cmd = new SqlCommand(updateQuery, connection))
-                {
-                    cmd.Parameters.AddWithValue("@RemainingWeekHours", remainingHours);
-                    cmd.Parameters.AddWithValue("@ProgressBarPercentage", Progressbar);
-                    cmd.Parameters.AddWithValue("@StudyDate", date);
-                    cmd.Parameters.AddWithValue("@StudiedHours", studiedHrs);
-                    cmd.Parameters.AddWithValue("@Module_Id", id);
-
-                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
-                    {
-
-                        return GetModuleByIdAdo(id);
-                    }
-                    else
-                    {
-                        // Module with the specified ID was not found
-                        return null;
-                    }
-                }
-            }
-        }
-        */
+        
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         /// <summary>
@@ -345,44 +254,6 @@ namespace Prog6212Poe.ModelHelper
 
             return id;
         }
-
-        /*
-        public ModuleTable GetModuleByIdAdo(int id)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string selectQuery = "SELECT * FROM ModuleTable WHERE Module_Id = @Module_Id";
-
-                using (SqlCommand cmd = new SqlCommand(selectQuery, connection))
-                {
-                    cmd.Parameters.AddWithValue("@Module_Id", id);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            // Map the database columns to the ModuleTable object
-                            ModuleTable module = new ModuleTable
-                            {
-                                Module_Id = (int)reader["Module_Id"],
-                                // Map other properties as needed
-                            };
-
-                            return module;
-                        }
-                        else
-                        {
-                            // No record found with the specified Module_Id
-                            return null;
-                        }
-                    }
-                }
-            }
-        }
-        */
-
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------Eugene*end

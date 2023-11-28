@@ -23,35 +23,47 @@ namespace Prog6212Poe.ModelHelper
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------
 
-       /// <summary>
-       /// Mehod to add study days 
-       /// </summary>
-       /// <param name="moduleId"></param>
-       /// <param name="day"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// Mehod to add study days or update if exits
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <param name="day"></param>
+        /// <returns></returns>
         public StudyDays AddStudyDays(int moduleId, string day)
         {
             try
-            { 
-                    var days = new StudyDays
+            {
+                var existingStudyDay = db.StudyDays.FirstOrDefault(s => s.Module_Id == moduleId);
+
+                if (existingStudyDay != null)
+                {
+                    // Update existing record
+                    existingStudyDay.Day = day;
+                    db.SaveChanges();
+                    return existingStudyDay;
+                }
+                else
+                {
+                    var newStudyDay = new StudyDays
                     {
                         Module_Id = moduleId,
                         Day = day
-
                     };
-                   
 
-                    db.StudyDays.Add(days);
-                    db.SaveChanges(); 
+                    db.StudyDays.Add(newStudyDay);
+                    db.SaveChanges();
 
-                    return days;
+                    return newStudyDay;
                 }
+            }
             catch (Exception e)
             {
+                // Log or handle the specific exception type
+                Console.Error.WriteLine($"Error in AddStudyDays: {e.Message}");
                 return null;
-
             }
         }
+
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -87,7 +99,7 @@ namespace Prog6212Poe.ModelHelper
                 }
                 else
                 {
-                    return "";
+                    return null;
                 }
             }
             catch (Exception e)
@@ -99,19 +111,25 @@ namespace Prog6212Poe.ModelHelper
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public string GetStudyDays(int moduleId)
+        public List<StudyDays> GetStudyDays(int moduleId)
         {
             try
             {
-                var studyDay = db.ModuleTables
-                   .Where(md => md.ModuleId == moduleId)
-                   .FirstOrDefault();
+                var studyDays = db.StudyDays
+              .Join(
+                  db.ModuleTables,
+                  studyDay => studyDay.Module_Id,
+                  module => module.ModuleId,
+                  (studyDay, module) => new { StudyDays = studyDay, Module = module }
+              )
+              .Where(j => j.Module.ModuleId == moduleId)
+              .Select(j => new StudyDays { Day = j.StudyDays.Day, Module = j.Module })
+              .ToList();
 
-                if (studyDay != null)
+                if (studyDays.Any())
                 {
-                    // Format the string with the desired information
-                    return $"{studyDay.Name}";
-
+                    return studyDays;
+                
                 }
                 else
                 {
@@ -121,9 +139,11 @@ namespace Prog6212Poe.ModelHelper
             catch (Exception e)
             {
                 // Log the exception or handle it appropriately
+                Console.Error.WriteLine($"Error in GetStudyDays: {e.Message}");
                 return null;
             }
         }
+
 
     }
 

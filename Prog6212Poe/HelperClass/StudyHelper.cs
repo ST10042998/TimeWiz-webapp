@@ -7,11 +7,18 @@ namespace Prog6212Poe.HelperClass
 {
     public class StudyHelper
     {
+        //initialize the classes
         private Semesters semester;
         private ModuleTables module;
         private TimeWizContext db;
         LoginInfos loginInfo;
         
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="db"></param>
         public StudyHelper(TimeWizContext db)
         {
             this.db = db;
@@ -21,7 +28,12 @@ namespace Prog6212Poe.HelperClass
 
         }
       
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+        /// <summary>
+        /// sort and return the list of semerster
+        /// </summary>
+        /// <returns></returns>
         public List<Semester> SemesterData()
         {
            var loginId = loginInfo.GetLastAdded();
@@ -53,7 +65,6 @@ namespace Prog6212Poe.HelperClass
             
         }
 
-       
-
     }
 }
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------*Eugene*end.

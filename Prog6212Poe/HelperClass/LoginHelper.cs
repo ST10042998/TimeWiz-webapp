@@ -12,16 +12,26 @@ using Prog6212Poe.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace TimeWizWebApp.HelperClasses
 {
     public class LoginHelper
     {
+        //initialize variables
         private readonly TimeWizContext _context;
         private Logins login;
         private Students student;
         public int loginId { get; set; }
         public string mess { get; set; }
+        private string pass = string.Empty;
+
+        //----------------------------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="context"></param>
         public LoginHelper(TimeWizContext context)
         {
             _context = context;
@@ -29,24 +39,27 @@ namespace TimeWizWebApp.HelperClasses
             student = new Students(context);
         }
 
-        string pass = string.Empty;
-   
+        //----------------------------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// adding a student to the database
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="surname"></param>
+        /// <param name="email"></param>
+        /// <param name="gender"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public void AddStudent(string name, string surname, string email, string gender, string username, string password)
         {
-            if (!String.IsNullOrWhiteSpace(username) && !String.IsNullOrWhiteSpace(password) && this.CheckPassword(password))
+            if (this.checkInput(name, surname, email, gender, username, password))
             {
                 
-               login.AddLoginUsingEF(username, this.HashPassword(password));
-               loginId = login.GetLoginId(username);
-               
+            login.AddLoginUsingEF(username, this.HashPassword(password));
+            loginId = login.GetLoginId(username);
 
-            }
+            student.AddStudentUsingEF(name, surname, email, gender, loginId);
 
-            if (!String.IsNullOrWhiteSpace(name) && !String.IsNullOrWhiteSpace(surname) && !String.IsNullOrWhiteSpace(email) && !String.IsNullOrWhiteSpace(gender) && this.CheckEmail(email))
-            {
-              
-                student.AddStudentUsingEF(name, surname, email, gender,loginId);
-               
             }
 
             else
@@ -55,6 +68,33 @@ namespace TimeWizWebApp.HelperClasses
             }
         }
 
+        //----------------------------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// checks and returns a bool if the input is valid
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="surname"></param>
+        /// <param name="email"></param>
+        /// <param name="gender"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public bool checkInput(string name, string surname, string email, string gender, string username, string password)
+        {
+            if(name.ToCharArray().Any(char.IsDigit) || surname.ToCharArray().Any(char.IsDigit) || this.CheckEmail(email) || this.CheckPassword(password) || String.IsNullOrWhiteSpace(gender) || String.IsNullOrWhiteSpace(username))
+            {
+                return false;
+            }
+
+            else
+            {
+                return true;
+            }
+
+           
+
+        }
         //----------------------------------------------------------------------------------------------------------------------------------
 
         /// <summary>
@@ -71,6 +111,13 @@ namespace TimeWizWebApp.HelperClasses
             
         }
 
+        //----------------------------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// get the login id using username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public int GetLoginId(string username)
         {
             int id = 0;
@@ -88,13 +135,11 @@ namespace TimeWizWebApp.HelperClasses
             }
             catch (Exception ex)
             {
-                // Handle or log the exception
                 mess = ex.Message;
             }
 
             return id;
         }
-
 
 
         //----------------------------------------------------------------------------------------------------------------------------------
@@ -144,13 +189,13 @@ namespace TimeWizWebApp.HelperClasses
 
         //----------------------------------------------------------------------------------------------------------------------------------
 
-     /// <summary>
-     /// bool to check if the user can login
-     /// </summary>
-     /// <param name="username"></param>
-     /// <param name="password"></param>
-     /// <returns></returns>
-        public bool Login(string username, string password)
+        /// <summary>
+        /// bool to check if the user can login
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<bool> Login(string username, string password)
         {
             if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password))
             {
@@ -159,7 +204,7 @@ namespace TimeWizWebApp.HelperClasses
 
             bool isAuthenticated = false;
 
-            var user = _context.Logins.FirstOrDefault(u => u.UserName == username);
+            var user = await _context.Logins.FirstOrDefaultAsync(u => u.UserName == username);
 
             if (user != null)
             {

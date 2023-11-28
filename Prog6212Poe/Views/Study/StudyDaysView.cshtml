@@ -7,6 +7,38 @@
     body {
         background-color: lightcyan;
     }
+
+    .save-button {
+        margin: 25px 0;
+        height: 35px;
+        width: 250px;
+        background: lightgreen;
+        color: black;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+    }
+
+        .save-button:hover {
+            background: AliceBlue;
+            color: white;
+        }
+
+    .cancel-button {
+        margin: 25px 0;
+        height: 35px;
+        width: 250px;
+        background: red;
+        color: black;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+    }
+
+        .cancel-button:hover {
+            background: AliceBlue;
+            color: white;
+        }
 </style>
 <!DOCTYPE html>
 <html>
@@ -23,9 +55,22 @@
 
         <form id="studyForm" asp-controller="Study" asp-action="DropDownSemester" method="post">
             <!-- label and combobox for choosing semester  -->
-            <div style="margin: 10px 0;">
+            <div style="margin: 0 0;">
                 <label>Semester</label>
                 <select id="semesterDropdown"  asp-items="ViewBag.SemesterList" style="margin: 5px 0 0 0; width: 120px;" onclick="onDropdownChange()" name="SelectedItemId"></select>
+
+
+                <!-- table to display the studydays data -->
+                <table id="StudyDays" style="margin:0 0 0 500px; width: 60%; background-color: #F9DBC1; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th>Module Name</th>
+                            <th>Study Day</th>
+
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
 
         </form>
@@ -38,7 +83,7 @@
             </div>
         </form>
         
-            <!-- label and textbox for studyHours input -->
+            
             <div style="margin: 10px 0;">
                 <label>choose day to study</label>
                 <select id="DayDropDown" asp-items="ViewBag.StudyDayList" style="margin: 5px 0 0 0; width: 120px;" onclick="chosenDay()" ></select>
@@ -47,27 +92,16 @@
             
 
             <!-- Cancel and Save buttons -->
-            <div style="display: flex; justify-content: space-between; margin: 35px 0;">
-                <form asp-controller="Study" asp-action="Cancel" method="post" style="width: 45%;">
-                <button type="button" name="btnStudyCancel" onclick="CancelBtn_Click()" style="margin:auto; width:35%; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);">Cancel</button>
-               </form>
+            <div style="display: flex; margin: 15px 0;">
+            <button class="cancel-button" type="button" name="btnStudyCancel" onclick="CancelBtn_Click()" style="margin:0 0 0 450px; width:10%; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);">Cancel</button>
                
-                <button type="submit" name="btnStudySave" style="margin:auto; width: 35%; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45);" onclick="save">Save</button>
+               
+                <button class="save-button"  type="submit" name="btnStudySave" style="margin:0 0 0 120px; width: 10%; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45);" onclick="save()">Save</button>
 
             </div>
        
     </div>
-    <!-- datagrid to display the Module data -->
-    <table id="StudyDays" style="margin: 10px 0; width: 100%; background-color: #F9DBC1; border-collapse: collapse;">
-        <thead>
-            <tr>
-                <th>Module Name</th>
-                <th>Study Day</th>
-                
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -113,36 +147,47 @@
                     type: 'POST',
                     data: { selectedItemId: selectedItemId },
                     success: function (data) {
-                        // Clear the table
-                        $('StudyDays tbody').empty();
+                      
+                        var moduleData = data.moduleData;
 
-                        // Iterate through the retrieved data
-                        $.each(data.moduleData, function (index, item) {
-                           
-                            $.ajax({
-                                url: '/Study/GetModuleName', 
-                                type: 'GET',
-                                data: { moduleId: item.module_id },
-                                success: function (name) {
-                                    var name = name.studyDaysData
-                                    // Append a table row with the module name and other data
-                                    $('#StudyDays tbody').append('<tr><td>' + name + '</td><td>' + item.Day + '</td></tr>');
-                                },
-                                error: function (error) {
-                                    console.error('Error fetching module name:', error);
-                                }
-                            });
-                        });
+                        
                     },
                     error: function (xhr, status, error) {
                         console.log('Error fetching module data:', error);
+                       
                     }
                 });
+
+                if (selectedItemId) {
+                   
+                    $.ajax({
+                        url: '/Study/GetModuleName',
+                        type: 'GET',
+                        data: { selectedItemId: selectedItemId },
+                        success: function (data) {
+                            // Clear the table
+                            $('#StudyDays tbody').empty();
+
+                            var rowsHtml = '';
+                            $.each(data.studyDaysData, function (index, item) {
+                                rowsHtml += '<tr><td>' + item.module.name + '</td><td>' + item.day + '</td></tr>';
+                            });
+                            var STUDY = data.studyDaysData;
+
+                            console.log('Study data:', STUDY);
+                      
+                            $('#StudyDays tbody').append(rowsHtml);
+                        },
+                        error: function (error) {
+                            console.error('Error fetching study:', error);
+                        }
+                    });
+                }
             }
         }
 
 
-        function chosenDay() {
+        function save() {
             var selectedDay = $("#DayDropDown option:selected").text();
 
             console.log('Selected Day:', selectedDay);

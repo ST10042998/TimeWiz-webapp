@@ -117,7 +117,15 @@
     </div>
     </form>>
 
-
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var message = '@ViewBag.Message';
+            if (message.includes("Username or password is incorrect")) {
+                alert('Username or password is incorrect');
+            }
+        });
+        </script>
 </body>
 </html>
 

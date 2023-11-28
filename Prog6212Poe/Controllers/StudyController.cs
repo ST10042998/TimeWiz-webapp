@@ -204,7 +204,7 @@ namespace Prog6212Poe.Controllers
                             moduleData.StudiedHours = StudiedHours;
 
                             StudiedHoursPerDate.Add(currentDate, moduleData.StudiedHours.Value);
-                            // Calculate ProgressBarPercentage based on your business logic
+                            // Calculate ProgressBarPercentage 
                             double Progressbar = cal.ProgressBarCal(StudiedHoursPerDate, moduleData.SelfStudyHours.Value);
 
                             int RemainingWeekHours = this.cal.CalculateRemainingHoursForCurrentWeek(StudiedHoursPerDate, moduleData.SelfStudyHours.Value);
@@ -334,13 +334,28 @@ namespace Prog6212Poe.Controllers
         /// </summary>
         /// <param name="selectedSemesterId"></param>
         /// <returns></returns>
-        public IActionResult GetModuleName()
+        public IActionResult GetModuleName(int selectedItemId)
         {
-            int selectedModuleId = HttpContext.Session.GetInt32("ModuleId").Value;
-            var studyDaysData = days.GetStudyDays(selectedModuleId);
-            return Json( new { studyDaysData });
+           var studyDaysData = this.StudyTables(selectedItemId);
+            return studyDaysData;   
 
         }
+
+        //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// returns the study days data as json
+        /// </summary>
+        /// <param name="selectedItemId"></param>
+        /// <returns></returns>
+        private JsonResult StudyTables(int selectedItemId)
+        {
+            var studyDaysData = days.GetStudyDays(selectedItemId);
+
+            // Return data as JSON
+            return Json(new { studyDaysData });
+        }
+
     }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------*Eugene*End..

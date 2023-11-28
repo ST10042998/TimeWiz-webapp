@@ -5,13 +5,25 @@ public class Logins
 {
     private readonly TimeWizContext _context;
    
-public Logins(TimeWizContext context)
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------Eugene*start
+
+    /// <summary>
+    /// constructor
+    /// </summary>
+    /// <param name="context"></param>
+    public Logins(TimeWizContext context)
     {
         _context = context;
     }
 
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------Eugene*start
 
-
+    /// <summary>
+    /// add login using entity framework
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
     public Login AddLoginUsingEF(string username, string password)
     {
         try
@@ -23,16 +35,24 @@ public Logins(TimeWizContext context)
             };
 
             _context.Logins.Add(login);
-            _context.SaveChanges(); // This will insert the login and get the ID
+            _context.SaveChanges(); 
 
             return login;
         }
         catch (Exception e)
         {
             return null;
-            // Handle exceptions
+            
         }
     }
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------Eugene*end
+
+        /// <summary>
+        /// gets login id using username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public int GetLoginId(string username)
         {
             try
@@ -43,10 +63,9 @@ public Logins(TimeWizContext context)
             catch (Exception e)
             {
                 return 0;
-                // Handle exceptions
+               
             }
         }
-    }
-
-    
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------Eugene*end
 

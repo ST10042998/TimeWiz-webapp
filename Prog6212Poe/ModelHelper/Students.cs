@@ -6,13 +6,27 @@ public class Students
 {
     private readonly TimeWizContext _context;
 
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------Eugene*start
+
+    /// <summary>
+    /// constructor
+    /// </summary>
+    /// <param name="context"></param>
     public Students(TimeWizContext context)
     {
         _context = context;
     }
-
-   
-
+       
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------Eugene*start
+    
+    /// <summary>
+    /// add student using entity framework
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="surname"></param>
+    /// <param name="email"></param>
+    /// <param name="gender"></param>
+    /// <param name="login_id"></param>
     public void AddStudentUsingEF(string name, string surname, string email, string gender, int login_id)
     {
         try
@@ -31,7 +45,7 @@ public class Students
         }
         catch (Exception e)
         {
-            // Handle exceptions
+         
         }
     }
 

@@ -7,7 +7,7 @@ namespace Prog6212Poe.ModelHelper
 {
     public class Semesters
     {
-
+        //initializing variables
         private TimeWizContext db ;
 
         public Semester semeseter = new Semester();
@@ -22,7 +22,13 @@ namespace Prog6212Poe.ModelHelper
             db = _db;
         }
 
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+        /// <summary>
+        /// get all semesters using entity framework
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public List<Semester> GetAllSemesterEF(int id)
         {
             List<Semester> semesters = new List<Semester>();

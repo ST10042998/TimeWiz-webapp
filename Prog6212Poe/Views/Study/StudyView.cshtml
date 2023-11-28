@@ -8,6 +8,38 @@
     body {
         background-color: azure;
     }
+
+    .save-button {
+        margin: 25px 0;
+        height: 35px;
+        width: 250px;
+        background: lightgreen;
+        color: black;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+    }
+
+        .save-button:hover {
+            background: AliceBlue;
+            color: white;
+        }
+
+    .cancel-button {
+        margin: 25px 0;
+        height: 35px;
+        width: 250px;
+        background: red;
+        color: black;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+    }
+
+        .cancel-button:hover {
+            background: AliceBlue;
+            color: white;
+        }
 </style>
 <!DOCTYPE html>
 <html>
@@ -29,7 +61,7 @@
                 <select id="semesterDropdown" asp-for="SelectedItemId" asp-items="ViewBag.SemesterList" style="margin: 5px 0 0 0; width: 120px;" onclick="onDropdownChange()" name="SelectedItemId"></select>
             </div>
 
-            <!-- datagrid to display the semester data -->
+            <!-- table to display the semester data -->
             <table id="semesterTable" style="margin: 10px 0; width: 100%; background-color: #F9DBC1; border-collapse: collapse;">
                 <thead>
                     <tr>
@@ -42,7 +74,7 @@
                 <tbody></tbody>
             </table>
 
-            <!-- datagrid to display the Module data -->
+            <!-- table to display the Module data -->
             <table id="moduleTable" style="margin: 10px 0; width: 100%; background-color: #F9DBC1; border-collapse: collapse;">
                 <thead>
                     <tr>
@@ -74,9 +106,9 @@
 
         <!-- Cancel and Save buttons -->
         <div style="display: flex; justify-content: space-between; margin: 35px 0;">
-                <button type="button" name="btnStudyCancel" onclick="CancelBtn_Click()"  style="margin:auto; width:35%; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);">Cancel</button>
+                <button class="cancel-button" type="button" name="btnStudyCancel" onclick="CancelBtn_Click()"  style="margin:auto; width:35%; background-color: #FF7373; box-shadow: 0 0 15px rgba(255, 0, 0, 0.45);">Cancel</button>
            
-                <button type="submit" onclick="saveStudy()"name="btnStudySave" style="margin:auto; width: 35%; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45);" onclick="save">Save</button>
+                <button class="save-button" type="submit" onclick="saveStudy()"name="btnStudySave" style="margin:auto; width: 35%; background-color: #B5FF6F; box-shadow: 0 0 15px rgba(12, 255, 0, 0.45);" onclick="save">Save</button>
             
         </div>
         </form>
@@ -84,7 +116,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <!-- Add the following script -->
     <script>
 
         // Function to handle dropdown change
@@ -94,7 +125,7 @@
 
             // Check if a semester is selected
             if (selectedSemesterId) {
-                // Make an AJAX request to get the semester data
+                
                 $.ajax({
                     url: '/Study/DropDownSemester',
                     type: 'POST',
@@ -103,13 +134,13 @@
                         // Update the semester table
                         $('#semesterTable tbody').empty();
                         $.each(data.semesterData, function (index, item) {
-                            // Access the properties of the item correctly based on the structure of your data
+                           
                             $('#semesterTable tbody').append('<tr><td>' + item.semesterNum + '</td><td>' + item.numOfWeeks + '</td><td>' + item.startDate + '</td><td>' + item.endDate + '</td></tr>');
                         });
                     },
                     error: function (xhr, status, error) {
                         console.log('Error fetching semester data:', error);
-                        // You can add more error handling here if needed
+                      
                     }
                 });
             }
@@ -123,19 +154,19 @@
 
                         $('#moduleTable tbody').empty();
                         $.each(data.moduleData, function (index, item) {
-                            // Access the properties of the item correctly based on the structure of your data
+                        
                             $('#moduleTable tbody').append('<tr><td>' + item.name + '</td><td>' + item.code + '</td><td>' + item.credits + '</td><td>' + item.classHoursPerWeek + '</td><td>' + item.selfStudyHours + '</td><td>');
                         });
 
                         $('#moduleDropDown').empty();
                         $.each(data.moduleData, function (index, item) {
-                            // Access the properties of the item correctly based on the structure of your data
+                            
                             $('#moduleDropDown').append('<option value="' + item.moduleId + '">' + item.code + '</option>');
                         });
                     },
                     error: function (xhr, status, error) {
                         console.log('Error fetching semester data:', error);
-                        // You can add more error handling here if needed
+                        
                     }
                 });
             }
@@ -147,25 +178,22 @@
 
             // Check if a module is selected
             if (selectedItemId) {
-                // Make an AJAX request to get the module data
+              
                 $.ajax({
                     url: '/Study/IdModule',
                     type: 'POST',
                     data: { selectedItemId: selectedItemId },
                     success: function (data) {
-                        // Handle success if needed
-
-                        // Assuming data contains the moduleData
+                      a
                         var moduleData = data.moduleData;
 
-                        // Perform actions based on the received moduleData
                         console.log('Module data:', moduleData);
 
-                        // You might want to update UI elements, show messages, etc.
+                        
                     },
                     error: function (xhr, status, error) {
                         console.log('Error fetching module data:', error);
-                        // Handle error if needed
+                       
                     }
                 });
             }
